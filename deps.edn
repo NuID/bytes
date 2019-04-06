@@ -1,0 +1,9 @@
+{:deps
+ {org.clojure/clojurescript {:mvn/version "1.10.520"},
+  org.clojure/clojure {:mvn/version "1.10.0"},
+  nuid/exception {:local/root "/Users/nolan/dev/nuid/exception"}},
+ :aliases
+ {:repl
+  {:extra-deps
+   {nuid/deps {:local/root "/Users/nolan/dev/nuid/deps"}}}},
+ :paths ["src"]}
