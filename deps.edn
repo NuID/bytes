@@ -2,8 +2,8 @@
  {org.clojure/clojurescript {:mvn/version "1.10.520"},
   org.clojure/clojure {:mvn/version "1.10.0"},
   nuid/exception
-  {:git/url "git@github.com:nuid/exception.git",
-   :sha "5f91330c3ce77fa6de60c52ad7d5bed4ec2efdfb"}},
+  {:git/url "https://github.com/nuid/exception.git",
+   :sha "550e53932982733cf07f00b94a57080678dab203"}},
  :aliases
  {:cljfmt
   {:extra-deps
@@ -19,6 +19,6 @@
   :repl
   {:extra-deps
    {nuid/deps
-    {:git/url "git@github.com:nuid/deps.git",
-     :sha "858ceadf16e1e84ca2d66abfdd36002cb058af15"}}}},
+    {:git/url "https://github.com/nuid/deps.git",
+     :sha "9d5a2d48467ee0e6a009651ae74003555943d94e"}}}},
  :paths ["src"]}
