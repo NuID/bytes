@@ -1,7 +1,8 @@
 (ns nuid.bytes
   (:require
    [nuid.exception :as exception]
-   #?@(:cljs [["buffer" :as b]])))
+   #?@(:cljs [["buffer" :as b]]))
+  (:refer-clojure :exclude [bytes?]))
 
 (def charsets
   "Intersection of [node's Buffer encodings](https://nodejs.org/api/buffer.html#buffer_buffers_and_character_encodings)
@@ -17,6 +18,8 @@
 
 (defn unsupported! [charset]
   (exception/throw! {:message (str "Unsupported charset: " charset)}))
+
+(def bytes? #?(:clj clojure.core/bytes? :cljs b/Buffer.isBuffer))
 
 (defn from
   ([s] (from s :utf8))
@@ -37,4 +40,5 @@
 #?(:cljs (def exports #js {:toString #(to %1 (or (keyword %2) :utf8))
                            :from #(from %1 (or (keyword %2) :utf8))
                            :unsupported (comp unsupported! keyword)
-                           :charsets (clj->js charsets)}))
+                           :charsets (clj->js charsets)
+                           :isBytes bytes?}))
