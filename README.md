@@ -8,11 +8,11 @@ Cross-platform byte (de)serialization and conversion.
 
 ## From Clojure and ClojureScript
 
-#### tools.deps:
+### tools.deps:
 
 `{nuid/bytes {:git/url "https://github.com/nuid/bytes" :sha "..."}`
 
-#### usage:
+### usage:
 
 ```
 $ clj # or shadow-cljs node-repl
@@ -32,7 +32,7 @@ Because this library exists as a common interface over exception facilities, it 
 
 In JavaScript, this library relies upon and mimics a subset of the `Buffer` API in both [node](https://nodejs.org/api/buffer.html) and the [browser](https://github.com/feross/buffer)
 
-#### node:
+### node:
 
 ```
 $ shadow-cljs release node
@@ -43,7 +43,7 @@ $ node
 > B.toString(b, "utf16le");
 ```
 
-#### browser:
+### browser:
 
 ```
 $ shadow-cljs release browser
@@ -66,14 +66,14 @@ The purpose of `nuid.bytes` and sibling `nuid` libraries is to abstract over pla
 
 Install [`git-hooks`](https://github.com/icefox/git-hooks) and fire away. Make sure not to get bitten by [`externs`](https://clojurescript.org/guides/externs) if modifying `npm` dependencies.
 
-#### formatting:
+### formatting:
 
 ```
 $ clojure -A:cljfmt            # check
 $ clojure -A:cljfmt:cljfmt/fix # fix
 ```
 
-#### dependencies:
+### dependencies:
 
 ```
 ## check
