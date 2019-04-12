@@ -2,11 +2,17 @@
   (:require
    [nuid.exception :as exception]
    #?@(:cljs [["buffer" :as b]]))
-  (:refer-clojure :exclude [bytes?]))
+  (:refer-clojure :exclude [bytes? str]))
+
+(defprotocol Bytesable
+  (from [x] [x charset]))
+
+(defprotocol Bytes
+  (str [b] [b charset]))
 
 (def charsets
-  "Intersection of [node's Buffer encodings](https://nodejs.org/api/buffer.html#buffer_buffers_and_character_encodings)
-  and the [JVM's charsets](https://docs.oracle.com/javase/8/docs/api/java/nio/charset/Charset.html)"
+  "Intersection of [node's buffer encodings](https://nodejs.org/api/buffer.html#buffer_buffers_and_character_encodings)
+  and the [jvm's charsets](https://docs.oracle.com/javase/8/docs/api/java/nio/charset/Charset.html)"
   {:ascii #?(:clj "US-ASCII" :cljs "ascii")
    :utf8 #?(:clj "UTF-8" :cljs "utf8")
    :utf16le #?(:clj "UTF-16LE" :cljs "utf16le")
@@ -17,28 +23,60 @@
    :utf16be #?(:clj "UTF-16BE" :cljs nil)})
 
 (defn unsupported! [charset]
-  (exception/throw! {:message (str "Unsupported charset: " charset)}))
+  (let [msg (clojure.core/str "Unsupported charset: " charset)]
+    (exception/throw! {:message msg})))
 
-(def bytes? #?(:clj clojure.core/bytes? :cljs b/Buffer.isBuffer))
+(def bytes? (partial satisfies? Bytes))
 
-(defn from
-  ([s] (from s :utf8))
-  ([s charset]
-   (if-let [cs (charsets charset)]
-     #?(:clj (.getBytes s cs)
-        :cljs (b/Buffer.from s cs))
-     (unsupported! charset))))
+#?(:clj
+   (extend-protocol Bytesable
+     java.lang.String
+     (from
+       ([x] (from x :utf8))
+       ([x charset]
+        (if-let [cs (charsets charset)]
+          (.getBytes x cs)
+          (unsupported! charset))))))
 
-(defn to
-  ([b] (to b :utf8))
-  ([b charset]
-   (if-let [cs (charsets charset)]
-     #?(:clj (String. b cs)
-        :cljs (.toString b cs))
-     (unsupported! charset))))
+#?(:clj
+   (extend-protocol Bytes
+     (type (byte-array 0))
+     (str
+       ([b] (str b :utf8))
+       ([b charset]
+        (if-let [cs (charsets charset)]
+          (String. b cs)
+          (unsupported! charset))))))
 
-#?(:cljs (def exports #js {:toString #(to %1 (or (keyword %2) :utf8))
-                           :from #(from %1 (or (keyword %2) :utf8))
-                           :unsupported (comp unsupported! keyword)
-                           :charsets (clj->js charsets)
-                           :isBytes bytes?}))
+#?(:cljs
+   (extend-protocol Bytesable
+     js/Array
+     (from
+       ([x] (b/Buffer.from x))
+       ([x _] (b/Buffer.from x)))
+
+     string
+     (from
+       ([x] (from x :utf8))
+       ([x charset]
+        (if-let [cs (charsets charset)]
+          (b/Buffer.from x cs)
+          (unsupported! charset))))))
+
+#?(:cljs
+   (extend-protocol Bytes
+     js/Buffer
+     (str
+       ([b] (str b :utf8))
+       ([b charset]
+        (if-let [cs (charsets charset)]
+          (.toString b cs)
+          (unsupported! charset))))))
+
+#?(:cljs
+   (def exports
+     #js {:toString #(str %1 (or (keyword %2) :utf8))
+          :from #(from %1 (or (keyword %2) :utf8))
+          :unsupported (comp unsupported! keyword)
+          :charsets (clj->js charsets)
+          :isBytes bytes?}))
