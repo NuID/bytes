@@ -10,7 +10,7 @@ Cross-platform byte (de)serialization and conversion.
 
 ### tools.deps:
 
-`{nuid/bytes {:git/url "https://github.com/nuid/bytes" :sha "..."}`
+`{nuid/bytes {:git/url "https://github.com/nuid/bytes" :sha "..."}}`
 
 ### usage:
 
