@@ -26,7 +26,7 @@
   (let [msg (clojure.core/str "Unsupported charset: " charset)]
     (exception/throw! {:message msg})))
 
-(def bytes? (partial satisfies? Bytes))
+(defn bytes? [x] (satisfies? Bytes x))
 
 #?(:clj
    (extend-protocol Bytesable
@@ -50,9 +50,9 @@
 
 #?(:cljs
    (extend-protocol Bytesable
-     js/Array
+     array
      (from
-       ([x] (b/Buffer.from x))
+       ([x]   (b/Buffer.from x))
        ([x _] (b/Buffer.from x)))
 
      string
