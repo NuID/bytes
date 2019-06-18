@@ -3,7 +3,7 @@
   org.clojure/clojure {:mvn/version "1.10.0"},
   nuid/exception
   {:git/url "https://github.com/nuid/exception.git",
-   :sha "4df11a8fcc55686415924c838e0ff670f9911188"}},
+   :sha "1c07bfac0edef61b37e3516aedbe45fd1e039f07"}},
  :aliases
  {:cljfmt
   {:extra-deps
