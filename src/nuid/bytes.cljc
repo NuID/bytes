@@ -2,7 +2,7 @@
   (:require
    [nuid.exception :as exception]
    #?@(:cljs [["buffer" :as b]]))
-  (:refer-clojure :exclude [bytes? str]))
+  (:refer-clojure :exclude [bytes? str concat]))
 
 (defprotocol Bytesable
   (from [x] [x charset]))
@@ -27,6 +27,17 @@
     (exception/throw! {:message msg})))
 
 (defn bytes? [x] (satisfies? Bytes x))
+
+(defn concat
+  [& bs]
+  #?(:clj
+     (with-open [out (java.io.ByteArrayOutputStream.)]
+       (doseq [b bs]
+         (.write out b 0 (count b)))
+       (.toByteArray out))
+     :cljs
+     (exception/throw!
+      {:message "bytes/concat not implemented in CLJS"})))
 
 #?(:clj
    (extend-protocol Bytesable
