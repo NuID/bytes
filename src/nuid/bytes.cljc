@@ -61,18 +61,18 @@
 
 #?(:cljs
    (extend-protocol Bytesable
-     array
-     (from
-       ([x]   (b/Buffer.from x))
-       ([x _] (b/Buffer.from x)))
-
      string
      (from
        ([x] (from x :utf8))
        ([x charset]
         (if-let [cs (charsets charset)]
           (b/Buffer.from x cs)
-          (unsupported! charset))))))
+          (unsupported! charset))))
+
+     default
+     (from
+       ([x]   (b/Buffer.from x))
+       ([x _] (b/Buffer.from x)))))
 
 #?(:cljs
    (extend-protocol Bytes
