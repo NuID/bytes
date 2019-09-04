@@ -76,7 +76,7 @@
 
 #?(:cljs
    (extend-protocol Bytes
-     js/Buffer
+     b/Buffer
      (str
        ([b] (str b :utf8))
        ([b charset]
