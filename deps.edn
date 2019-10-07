@@ -3,7 +3,7 @@
   org.clojure/clojure {:mvn/version "1.10.1"},
   nuid/exception
   {:git/url "https://github.com/nuid/exception.git",
-   :sha "ba62e8b49e4b837befe67ecaeda03ec189d7db03"}},
+   :sha "601a95e7f3400afd8145c015fbd6452435c37213"}},
  :aliases
  {:cljfmt
   {:extra-deps
@@ -16,10 +16,10 @@
   {:extra-deps {olical/depot {:mvn/version "1.8.4"}},
    :main-opts ["-m" "depot.outdated.main"]},
   :depot/update {:main-opts ["-m" "depot.outdated.main --update"]},
-  :shadow {:extra-deps {thheller/shadow-cljs {:mvn/version "2.8.52"}}},
+  :shadow {:extra-deps {thheller/shadow-cljs {:mvn/version "2.8.55"}}},
   :repl
   {:extra-deps
    {nuid/deps
     {:git/url "https://github.com/nuid/deps.git",
-     :sha "1cf5069bc708adf9f2809f3917cc9c5e971f28a0"}}}},
+     :sha "343a267df77b08124caf001c0a49916c4b2b7a8a"}}}},
  :paths ["src"]}
