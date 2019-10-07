@@ -1,8 +1,8 @@
 (ns nuid.bytes
+  (:refer-clojure :exclude [bytes? str concat])
   (:require
    [nuid.exception :as exception]
-   #?@(:cljs [["buffer" :as b]]))
-  (:refer-clojure :exclude [bytes? str concat]))
+   #?@(:cljs [["buffer" :as b]])))
 
 (defprotocol Bytesable
   (from [x] [x charset]))
@@ -13,14 +13,14 @@
 (def charsets
   "Intersection of [node's buffer encodings](https://nodejs.org/api/buffer.html#buffer_buffers_and_character_encodings)
   and the [jvm's charsets](https://docs.oracle.com/javase/8/docs/api/java/nio/charset/Charset.html)"
-  {:ascii #?(:clj "US-ASCII" :cljs "ascii")
-   :utf8 #?(:clj "UTF-8" :cljs "utf8")
-   :utf16le #?(:clj "UTF-16LE" :cljs "utf16le")
-   :ucs2 #?(:clj "UTF-16LE" :cljs "utf16le")
-   :latin1 #?(:clj "ISO-8859-1" :cljs "latin1")
-   :binary #?(:clj "ISO-8859-1" :cljs "binary")
-   :utf16 #?(:clj "UTF-16" :cljs "utf16le")
-   :utf16be #?(:clj "UTF-16BE" :cljs nil)})
+  {:ascii   #?(:clj "US-ASCII"   :cljs "ascii")
+   :utf8    #?(:clj "UTF-8"      :cljs "utf8")
+   :utf16le #?(:clj "UTF-16LE"   :cljs "utf16le")
+   :ucs2    #?(:clj "UTF-16LE"   :cljs "utf16le")
+   :latin1  #?(:clj "ISO-8859-1" :cljs "latin1")
+   :binary  #?(:clj "ISO-8859-1" :cljs "binary")
+   :utf16   #?(:clj "UTF-16"     :cljs "utf16le")
+   :utf16be #?(:clj "UTF-16BE"   :cljs nil)})
 
 (defn unsupported! [charset]
   (let [msg (clojure.core/str "Unsupported charset: " charset)]
@@ -30,14 +30,12 @@
 
 (defn concat
   [& bs]
-  #?(:clj
-     (with-open [out (java.io.ByteArrayOutputStream.)]
-       (doseq [b bs]
-         (.write out b 0 (count b)))
-       (.toByteArray out))
-     :cljs
-     (exception/throw!
-      {:message "bytes/concat not implemented in CLJS"})))
+  #?(:clj (with-open [out (java.io.ByteArrayOutputStream.)]
+            (doseq [b bs]
+              (.write out b 0 (count b)))
+            (.toByteArray out))
+     :cljs (exception/throw!
+            {:message "bytes/concat not implemented in CLJS"})))
 
 #?(:clj
    (extend-protocol Bytesable
@@ -84,10 +82,4 @@
           (.toString b cs)
           (unsupported! charset))))))
 
-#?(:cljs
-   (def exports
-     #js {:toString #(str %1 (or (keyword %2) :utf8))
-          :from #(from %1 (or (keyword %2) :utf8))
-          :unsupported (comp unsupported! keyword)
-          :charsets (clj->js charsets)
-          :isBytes bytes?}))
+#?(:cljs (def exports #js {}))
