@@ -2,10 +2,10 @@
  {org.clojure/clojure {:mvn/version "1.10.1"},
   nuid/exception
   {:git/url "https://github.com/nuid/exception.git",
-   :sha "a08adfcbf95d0e34e09d6a74ca0e3f06a337e80f"}},
+   :sha "5c2e0697bb36337084dddf6155dbe12dbdd46367"}},
  :aliases
  {:cljs
   {:extra-deps
    {org.clojure/clojurescript {:mvn/version "1.10.597"},
-    thheller/shadow-cljs {:mvn/version "2.8.74"}}}},
+    thheller/shadow-cljs {:mvn/version "2.8.83"}}}},
  :paths ["src"]}
