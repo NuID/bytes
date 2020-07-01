@@ -19,11 +19,11 @@ Cross-platform byte (de)serialization and conversion.
 ```
 $ clj # or shadow-cljs node-repl
 => (require '[nuid.bytes :as bytes])
-=> (def b (bytes/from "🐴"))            ;; defaults to utf8
-=> (bytes/str b)                        ;; => "🐴"
-=> (bytes/str b :utf16le)               ;; => "鿰뒐"
-=> (def b2 (bytes/from "🐴" :utf16le))
-=> (bytes/str b2 :utf16le)              ;; => "🐴"
+=> (def b (bytes/from "🐴"))                   ;; defaults to utf8
+=> (bytes/str b)                               ;; => "🐴"
+=> (bytes/str b :charset/utf16le)              ;; => "鿰뒐"
+=> (def b2 (bytes/from "🐴" :charset/utf16le))
+=> (bytes/str b2 :charset/utf16le)             ;; => "🐴"
 ```
 
 ## Licensing
