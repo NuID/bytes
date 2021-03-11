@@ -1,8 +1,7 @@
 (ns nuid.bytes.proto
   (:refer-clojure :exclude [bytes? str])
   (:require
-   #?@(:clj  [[clojure.alpha.spec :as s]]
-       :cljs [[clojure.spec.alpha :as s]])))
+   [clojure.spec.alpha :as s]))
 
 (defprotocol Bytesable
   (from

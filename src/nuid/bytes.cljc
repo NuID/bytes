@@ -1,10 +1,9 @@
 (ns nuid.bytes
   (:refer-clojure :exclude [bytes? str])
   (:require
+   [clojure.spec.alpha :as s]
    [nuid.bytes.impl]
-   [nuid.bytes.proto :as proto]
-   #?@(:clj  [[clojure.alpha.spec :as s]]
-       :cljs [[clojure.spec.alpha :as s]])))
+   [nuid.bytes.proto :as proto]))
 
 (s/def ::bytes ::proto/bytes)
 
